@@ -1,0 +1,7 @@
+plugins:
+  auto_email_in_enabled:
+    default: false
+  auto_email_in_divider:
+    default: '+'
+  auto_email_in_domain:
+    default: 'example.com'

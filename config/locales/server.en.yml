@@ -1,0 +1,5 @@
+en:
+  site_settings:
+    auto_email_in_enabled: "Enable automatic creation of category email-in addresses based on their slug"
+    auto_email_in_divider: "Set the divider between a parent category slug and sub category slug"
+    auto_email_in_domain: "Set the domain of the email-in addresses"
