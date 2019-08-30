@@ -1,6 +1,6 @@
 # name: auto-email-in
 # about: Discourse plugin which automatically sets category email-in addresses based on their slug
-# version: 0.0.1
+# version: 1.0.0
 # authors: Leo McArdle
 
 enabled_site_setting :auto_email_in_enabled

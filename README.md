@@ -1,6 +1,8 @@
 # auto-email-in
 *Discourse plugin which automatically sets category email-in addresses based on their slug*
 
+[![Build Status](https://travis-ci.org/mozilla/discourse-auto-email-in.svg?branch=master)](https://travis-ci.org/mozilla/discourse-auto-email-in)
+
 ## Bug reports
 
 Bug reports should be filed [by following the process described here](https://discourse.mozilla.org/t/where-do-i-file-bug-reports-about-discourse/32078).
