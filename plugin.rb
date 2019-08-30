@@ -13,24 +13,12 @@ after_initialize do
       update_subcategory_email_in
     end
 
-    def update_email_in(site_setting=false)
-      if site_setting and site_setting.name == 'auto_email_in_enabled'
-        return unless site_setting.value == 't'
-      else
-        return unless SiteSetting.auto_email_in_enabled
-      end
+    def update_email_in
+      return unless SiteSetting.auto_email_in_enabled
 
       old_email_in = self.email_in
       divider = SiteSetting.auto_email_in_divider
       domain = SiteSetting.auto_email_in_domain
-
-      if site_setting
-        if site_setting.name == 'auto_email_in_divider'
-          divider = site_setting.value
-        elsif site_setting.name == 'auto_email_in_domain'
-          domain = site_setting.value
-        end
-      end
 
       if self.parent_category
         new_email_in = "#{self.parent_category.slug}#{divider}#{self.slug}@#{domain}"
@@ -49,17 +37,12 @@ after_initialize do
       end
     end
   end
-
-  Category.all.each do |category|
-    category.update_email_in
-  end
 end
 
-DiscourseEvent.on(:site_setting_saved) do |site_setting|
-  name = site_setting.name
-  if name == 'auto_email_in_enabled' or name == 'auto_email_in_divider' or name == 'auto_email_in_domain'
+DiscourseEvent.on(:site_setting_changed) do |name|
+  if name == :auto_email_in_enabled or name == :auto_email_in_divider or name == :auto_email_in_domain
     Category.all.each do |category|
-      category.update_email_in(site_setting)
+      category.update_email_in
     end
   end
 end
