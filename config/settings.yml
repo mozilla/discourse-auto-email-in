@@ -7,3 +7,6 @@ plugins:
   auto_email_in_domain:
     default: 'example.com'
     shadowed_by_global: true
+  auto_email_in_append:
+    default: false
+    shadowed_by_global: true

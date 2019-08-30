@@ -20,6 +20,14 @@ describe Category do
       SiteSetting.auto_email_in_enabled = true
       expect(parent.reload.email_in).to eq "test-parent@example.com"
     end
+
+    it "appends emails-in when auto_email_in_append is set to true and then auto_email_in_enabled is set to true" do
+      parent.email_in = "some-old-email-in@example.com"
+      parent.save
+      SiteSetting.auto_email_in_append = true
+      SiteSetting.auto_email_in_enabled = true
+      expect(parent.reload.email_in).to eq "some-old-email-in@example.com|test-parent@example.com"
+    end
   end
 
   context "when auto-email-in is enabled" do
@@ -57,5 +65,49 @@ describe Category do
       expect(parent.email_in).to eq "test-parent@example.com"
     end
 
+    context "when auto_email_in_append is enabled" do
+      before { SiteSetting.auto_email_in_append = true }
+
+      it "appends new email-in" do
+        expect(parent.email_in).to eq "test-parent@example.com"
+        parent.slug = "new-test-parent"
+        parent.save
+        expect(parent.email_in).to eq "test-parent@example.com|new-test-parent@example.com"
+        parent.slug = "newer-test-parent"
+        parent.save
+        expect(parent.email_in).to eq "test-parent@example.com|new-test-parent@example.com|newer-test-parent@example.com"
+      end
+
+      it "doesn't append if new email-in is the same" do
+        expect(parent.email_in).to eq "test-parent@example.com"
+        parent.slug = "new-test-parent"
+        parent.save
+        expect(parent.email_in).to eq "test-parent@example.com|new-test-parent@example.com"
+        parent.save
+        expect(parent.email_in).to eq "test-parent@example.com|new-test-parent@example.com"
+      end
+
+      it "removes duplicates from the chain" do
+        expect(parent.email_in).to eq "test-parent@example.com"
+        parent.slug = "new-test-parent"
+        parent.save
+        expect(parent.email_in).to eq "test-parent@example.com|new-test-parent@example.com"
+        parent.slug = "test-parent"
+        parent.save
+        expect(parent.email_in).to eq "new-test-parent@example.com|test-parent@example.com"
+      end
+
+      it "allows old entries to be removed through manual editing" do
+        parent.slug = "new-test-parent"
+        parent.save
+        parent.slug = "newer-test-parent"
+        parent.save
+        expect(parent.email_in).to eq "test-parent@example.com|new-test-parent@example.com|newer-test-parent@example.com"
+        parent.email_in = "anything@example.com"
+        parent.save
+        expect(parent.email_in).to eq "anything@example.com|newer-test-parent@example.com"
+      end
+
+    end
   end
 end
