@@ -1,0 +1,4 @@
+en:
+  js:
+    auto_email_in:
+      disable: Disable auto-email-in plugin on this category and subcategories

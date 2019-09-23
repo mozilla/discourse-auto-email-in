@@ -1,6 +1,6 @@
 # name: auto-email-in
 # about: Discourse plugin which automatically sets category email-in addresses based on their slug
-# version: 1.1.0
+# version: 1.2.0
 # authors: Leo McArdle
 
 enabled_site_setting :auto_email_in_enabled
@@ -13,14 +13,18 @@ after_initialize do
       update_subcategory_email_in
     end
 
+    register_custom_field_type("auto_email_in_disabled", :boolean)
+
     def update_email_in
       return unless SiteSetting.auto_email_in_enabled
+      return if self.custom_fields["auto_email_in_disabled"]
 
       old_email_in = self.email_in
       divider = SiteSetting.auto_email_in_divider
       domain = SiteSetting.auto_email_in_domain
 
       if self.parent_category
+        return if self.parent_category.custom_fields["auto_email_in_disabled"]
         new_email_in = "#{self.parent_category.slug}#{divider}#{self.slug}@#{domain}"
       else
         new_email_in = "#{self.slug}@#{domain}"

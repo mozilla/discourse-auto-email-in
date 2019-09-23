@@ -13,6 +13,8 @@ Follow the Discourse [Install a Plugin](https://meta.discourse.org/t/install-a-p
 
 ## Usage
 
+Email-in address autogeneration can be disabled on particular categories by opening their category edit modal, going to "Settings", and ticking the "Disable auto-email-in plugin on this category and subcategories" option. Now the email-in address can be manually set, or removed altogether.
+
 If `auto_email_in_append` is enabled then this plugin won't overwrite existing email-in addresses, but will append newly generated addresses to the chain of possible addresses.
 
 Then, if an admin manually edits the email in value, the generated address will be appended (if it doesn't already exist). This can be used to clear old addresses on categories.

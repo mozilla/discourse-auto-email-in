@@ -109,5 +109,34 @@ describe Category do
       end
 
     end
+
+    context "when category has auto_email_in_disabled" do
+      context "and is child category" do
+        before { child.custom_fields["auto_email_in_disabled"] = true }
+
+        it "allows manually setting email-in" do
+          child.email_in = "manual@example.com"
+          child.save
+          expect(child.email_in).to eq "manual@example.com"
+          SiteSetting.auto_email_in_divider = "."
+          child.reload
+          expect(child.email_in).to eq "manual@example.com"
+        end
+      end
+
+      context "and is parent category" do
+        before do
+          child.save
+          parent.custom_fields["auto_email_in_disabled"] = true
+        end
+
+        it "doesn't update child categories" do
+          parent.slug = "new-parent"
+          parent.save
+          expect(parent.email_in).to eq "test-parent@example.com"
+          expect(child.email_in).to eq "test-parent+test-child@example.com"
+        end
+      end
+    end
   end
 end
