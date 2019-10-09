@@ -2,6 +2,7 @@
 # about: Discourse plugin which automatically sets category email-in addresses based on their slug
 # version: 1.2.0
 # authors: Leo McArdle
+# url: https://github.com/mozilla/discourse-auto-email-in
 
 enabled_site_setting :auto_email_in_enabled
 
